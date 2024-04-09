@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:car_club_rocknrome/screens/car_show_page.dart';
 import 'splash_screen.dart';
 
 void main() {
@@ -18,6 +19,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const SplashScreen(),
+      routes: {
+        '/carShow': (context) => CarShowPage(
+            carId: 0), // Initially passing 0, replace it with actual car ID
+      },
     );
   }
 }
@@ -82,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 final car = _cars[index];
                 return GestureDetector(
                   onTap: () {
-                    // Handle onTap event if needed
+                    Navigator.pushNamed(context, '/carShow', arguments: car.id);
                   },
                   child: Card(
                     child: ListTile(
