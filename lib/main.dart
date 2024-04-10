@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:car_club_rocknrome/screens/car_show_page.dart';
-import 'splash_screen.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,9 +18,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SplashScreen(),
+      home: MyHomePage(),
       routes: {
-        '/carShow': (context) => CarShowPage(
+        '/carShow': (context) => const CarShowPage(
             carId: 0), // Initially passing 0, replace it with actual car ID
       },
     );
@@ -36,6 +36,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Car> _cars = [];
+  final NumberFormat _formatter =
+      NumberFormat('#,##,###'); // Formatter for mileage
 
   @override
   void initState() {
@@ -85,6 +87,10 @@ class _MyHomePageState extends State<MyHomePage> {
               itemCount: _cars.length,
               itemBuilder: (context, index) {
                 final car = _cars[index];
+                final formattedMileage =
+                    _formatter.format(car.mileage); // Format mileage
+                final formattedPrice =
+                    '\$${_formatter.format(car.price)}'; // Format price
                 return GestureDetector(
                   onTap: () {
                     // Handle onTap event to navigate to the show page with the correct URL
@@ -100,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       leading: Image.network(car.photoUrl),
                       title: Text('${car.make} ${car.model}'),
                       subtitle: Text(
-                          'Color: ${car.color}\nYear: ${car.year}\nMileage: ${car.mileage} miles\nPrice: \$${car.price.toStringAsFixed(2)}'),
+                          'Color: ${car.color}\nYear: ${car.year}\nMileage: $formattedMileage miles\nPrice: $formattedPrice'),
                     ),
                   ),
                 );
