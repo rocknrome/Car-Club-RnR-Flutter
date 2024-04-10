@@ -98,8 +98,7 @@ class _CarShowPageState extends State<CarShowPage> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.network(
-                    car['photo_url']), // Display the image using photo_url
+                Image.network(car['photo_url']),
                 SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),

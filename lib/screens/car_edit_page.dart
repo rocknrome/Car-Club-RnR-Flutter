@@ -19,6 +19,7 @@ class _CarEditPageState extends State<CarEditPage> {
   late TextEditingController _mileageController;
   late TextEditingController _priceController;
   late TextEditingController _descriptionController;
+  late TextEditingController _photoUrlController;
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _CarEditPageState extends State<CarEditPage> {
     _mileageController = TextEditingController();
     _priceController = TextEditingController();
     _descriptionController = TextEditingController();
+    _photoUrlController = TextEditingController();
 
     // Fetch car details and set initial values in form fields
     fetchCarDetails(widget.carId);
@@ -44,6 +46,7 @@ class _CarEditPageState extends State<CarEditPage> {
     _mileageController.dispose();
     _priceController.dispose();
     _descriptionController.dispose();
+    _photoUrlController.dispose();
     super.dispose();
   }
 
@@ -62,6 +65,7 @@ class _CarEditPageState extends State<CarEditPage> {
         _mileageController.text = carData['mileage'].toString();
         _priceController.text = carData['price'];
         _descriptionController.text = carData['description'];
+        _photoUrlController.text = carData['photo_url'];
       });
     } else {
       // Handle error
@@ -84,8 +88,7 @@ class _CarEditPageState extends State<CarEditPage> {
       "mileage": int.tryParse(_mileageController.text) ?? 0,
       "price": _priceController.text,
       "description": _descriptionController.text,
-      "photo_url":
-          'https://live.staticflickr.com/65535/53633706438_62befee86d.jpg'
+      "photo_url": _photoUrlController.text
     };
 
     final response = await http.put(
@@ -161,6 +164,10 @@ class _CarEditPageState extends State<CarEditPage> {
             TextFormField(
               controller: _descriptionController,
               decoration: InputDecoration(labelText: 'Description'),
+            ),
+            TextFormField(
+              controller: _photoUrlController,
+              decoration: InputDecoration(labelText: 'Photo URL'),
             ),
             SizedBox(height: 20),
             ElevatedButton(
