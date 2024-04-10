@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'car_edit_page.dart';
+import 'car_add_page.dart';
 
 class CarShowPage extends StatefulWidget {
   final int carId;
@@ -164,9 +165,7 @@ class _CarShowPageState extends State<CarShowPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CarEditPage(
-                                carId:
-                                    0), // Pass 0 as carId for adding a new car
+                            builder: (context) => AddCarPage(),
                           ),
                         );
                       },
