@@ -87,7 +87,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 final car = _cars[index];
                 return GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/carShow', arguments: car.id);
+                    // Handle onTap event to navigate to the show page with the correct URL
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CarShowPage(carId: car.id),
+                      ),
+                    );
                   },
                   child: Card(
                     child: ListTile(
@@ -95,12 +101,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       title: Text('${car.make} ${car.model}'),
                       subtitle: Text(
                           'Color: ${car.color}\nYear: ${car.year}\nMileage: ${car.mileage} miles\nPrice: \$${car.price.toStringAsFixed(2)}'),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.arrow_forward),
-                        onPressed: () {
-                          // Handle onPressed event if needed
-                        },
-                      ),
                     ),
                   ),
                 );
