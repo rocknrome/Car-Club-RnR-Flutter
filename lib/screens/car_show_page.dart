@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'car_edit_page.dart'; // Import the CarEditPage
 
 class CarShowPage extends StatefulWidget {
   final int carId;
@@ -96,7 +97,13 @@ class _CarShowPageState extends State<CarShowPage> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        // Navigate to edit car page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                CarEditPage(carId: widget.carId),
+                          ),
+                        );
                       },
                       child: Text('Edit Car'),
                     ),

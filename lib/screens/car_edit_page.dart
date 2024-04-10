@@ -4,10 +4,8 @@ import 'dart:convert';
 
 class CarEditPage extends StatefulWidget {
   final int carId;
-  final void Function() refreshCar; // Define the refreshCar callback
 
-  const CarEditPage({Key? key, required this.carId, required this.refreshCar})
-      : super(key: key);
+  const CarEditPage({Key? key, required this.carId}) : super(key: key);
 
   @override
   _CarEditPageState createState() => _CarEditPageState();
@@ -17,6 +15,10 @@ class _CarEditPageState extends State<CarEditPage> {
   late TextEditingController _makeController;
   late TextEditingController _modelController;
   late TextEditingController _colorController;
+  late TextEditingController _yearController;
+  late TextEditingController _mileageController;
+  late TextEditingController _priceController;
+  late TextEditingController _descriptionController;
 
   @override
   void initState() {
@@ -24,6 +26,10 @@ class _CarEditPageState extends State<CarEditPage> {
     _makeController = TextEditingController();
     _modelController = TextEditingController();
     _colorController = TextEditingController();
+    _yearController = TextEditingController();
+    _mileageController = TextEditingController();
+    _priceController = TextEditingController();
+    _descriptionController = TextEditingController();
 
     // Fetch car details and set initial values in form fields
     fetchCarDetails(widget.carId);
@@ -34,11 +40,16 @@ class _CarEditPageState extends State<CarEditPage> {
     _makeController.dispose();
     _modelController.dispose();
     _colorController.dispose();
+    _yearController.dispose();
+    _mileageController.dispose();
+    _priceController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
   Future<void> fetchCarDetails(int carId) async {
-    final url = Uri.parse('https://api.example.com/cars/$carId');
+    final url = Uri.parse(
+        'https://used-car-dealership-be.onrender.com/api/cars/$carId/');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -47,6 +58,10 @@ class _CarEditPageState extends State<CarEditPage> {
         _makeController.text = carData['make'];
         _modelController.text = carData['model'];
         _colorController.text = carData['color'];
+        _yearController.text = carData['year'].toString();
+        _mileageController.text = carData['mileage'].toString();
+        _priceController.text = carData['price'];
+        _descriptionController.text = carData['description'];
       });
     } else {
       // Handle error
@@ -58,11 +73,19 @@ class _CarEditPageState extends State<CarEditPage> {
   }
 
   Future<void> _saveChanges(int carId) async {
-    final url = Uri.parse('https://api.example.com/cars/$carId');
+    final url = Uri.parse(
+        'https://used-car-dealership-be.onrender.com/api/cars/$carId/');
     final Map<String, dynamic> requestBody = {
+      "id": carId,
       "make": _makeController.text,
       "model": _modelController.text,
       "color": _colorController.text,
+      "year": int.tryParse(_yearController.text) ?? 0,
+      "mileage": int.tryParse(_mileageController.text) ?? 0,
+      "price": _priceController.text,
+      "description": _descriptionController.text,
+      "photo_url":
+          'https://live.staticflickr.com/65535/53633706438_62befee86d.jpg'
     };
 
     final response = await http.put(
@@ -73,14 +96,18 @@ class _CarEditPageState extends State<CarEditPage> {
 
     if (response.statusCode == 200) {
       // Show SnackBar
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Car details updated successfully!'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      // Call the refreshCar callback to update the data in CarShowPage
-      widget.refreshCar();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+            SnackBar(
+              content: Text('Car details updated successfully!'),
+              duration: Duration(seconds: 2),
+            ),
+          )
+          .closed
+          .then((_) {
+        // Navigate back to CarShowPage
+        Navigator.of(context).pop();
+      });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -116,6 +143,24 @@ class _CarEditPageState extends State<CarEditPage> {
             TextFormField(
               controller: _colorController,
               decoration: InputDecoration(labelText: 'Color'),
+            ),
+            TextFormField(
+              controller: _yearController,
+              decoration: InputDecoration(labelText: 'Year'),
+              keyboardType: TextInputType.number,
+            ),
+            TextFormField(
+              controller: _mileageController,
+              decoration: InputDecoration(labelText: 'Mileage'),
+              keyboardType: TextInputType.number,
+            ),
+            TextFormField(
+              controller: _priceController,
+              decoration: InputDecoration(labelText: 'Price'),
+            ),
+            TextFormField(
+              controller: _descriptionController,
+              decoration: InputDecoration(labelText: 'Description'),
             ),
             SizedBox(height: 20),
             ElevatedButton(
