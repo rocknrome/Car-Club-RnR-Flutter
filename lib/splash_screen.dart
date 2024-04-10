@@ -13,7 +13,7 @@ class SplashScreen extends StatelessWidget {
         children: [
           Center(
             child: SizedBox(
-              height: 80,
+              height: 74,
               width: 180,
               child: Image.asset(
                 'assets/mercedes_green.png',
