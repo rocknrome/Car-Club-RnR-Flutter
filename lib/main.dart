@@ -9,7 +9,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
       routes: {
         '/carShow': (context) => const CarShowPage(
             carId: 0), // Initially passing 0, replace it with actual car ID
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key});
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -76,6 +76,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _fetchData(); // Fetch data again when dependencies change
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -87,13 +93,10 @@ class _MyHomePageState extends State<MyHomePage> {
               itemCount: _cars.length,
               itemBuilder: (context, index) {
                 final car = _cars[index];
-                final formattedMileage =
-                    _formatter.format(car.mileage); // Format mileage
-                final formattedPrice =
-                    '\$${_formatter.format(car.price)}'; // Format price
+                final formattedMileage = _formatter.format(car.mileage);
+                final formattedPrice = '\$${_formatter.format(car.price)}';
                 return GestureDetector(
                   onTap: () {
-                    // Handle onTap event to navigate to the show page with the correct URL
                     Navigator.push(
                       context,
                       MaterialPageRoute(
