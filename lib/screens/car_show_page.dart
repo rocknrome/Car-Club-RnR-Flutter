@@ -32,6 +32,54 @@ class _CarShowPageState extends State<CarShowPage> {
     }
   }
 
+  Future<void> _deleteCar() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Confirm Deletion'),
+        content: Text('Are you sure you want to delete this car?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true); // Confirm deletion
+            },
+            child: Text('Delete'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false); // Cancel deletion
+            },
+            child: Text('Cancel'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != null && confirmed) {
+      final response = await http.delete(
+        Uri.parse(
+            'https://used-car-dealership-be.onrender.com/api/cars/${widget.carId}/'),
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Car deleted successfully!'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        Navigator.pop(context); // Redirect to main page
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to delete car!'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,9 +156,7 @@ class _CarShowPageState extends State<CarShowPage> {
                       child: Text('Edit Car'),
                     ),
                     ElevatedButton(
-                      onPressed: () {
-                        // Delete car
-                      },
+                      onPressed: _deleteCar, // Call _deleteCar method
                       child: Text('Delete Car'),
                     ),
                     ElevatedButton(
