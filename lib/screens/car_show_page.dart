@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'car_edit_page.dart';
 import 'car_add_page.dart';
+import 'package:intl/intl.dart';
 
 class CarShowPage extends StatefulWidget {
   final int carId;
@@ -15,6 +16,8 @@ class CarShowPage extends StatefulWidget {
 
 class _CarShowPageState extends State<CarShowPage> {
   late Future<Map<String, dynamic>> _futureCar;
+  final NumberFormat _formatter =
+      NumberFormat.currency(symbol: '\$', decimalDigits: 0);
 
   @override
   void initState() {
@@ -96,6 +99,9 @@ class _CarShowPageState extends State<CarShowPage> {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
             final car = snapshot.data!;
+            final formattedMileage = _formatter.format(car['mileage']);
+            final formattedPrice =
+                _formatter.format(double.parse(car['price']));
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -129,14 +135,14 @@ class _CarShowPageState extends State<CarShowPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
-                    'Mileage: ${car['mileage']} miles',
+                    'Mileage: $formattedMileage miles',
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
-                    'Price: \$${car['price']}',
+                    'Price: $formattedPrice',
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
