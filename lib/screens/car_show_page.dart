@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'car_edit_page.dart'; // Import the CarEditPage
+import 'car_edit_page.dart';
 
 class CarShowPage extends StatefulWidget {
   final int carId;
@@ -98,7 +98,8 @@ class _CarShowPageState extends State<CarShowPage> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.network(car['photo_url']),
+                Image.network(
+                    car['photo_url']), // Display the image using photo_url
                 SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -161,9 +162,16 @@ class _CarShowPageState extends State<CarShowPage> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CarEditPage(
+                                carId:
+                                    0), // Pass 0 as carId for adding a new car
+                          ),
+                        );
                       },
-                      child: Text('Back to list'),
+                      child: Text('Add Car'),
                     ),
                   ],
                 ),
