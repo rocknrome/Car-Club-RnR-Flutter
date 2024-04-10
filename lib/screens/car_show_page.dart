@@ -15,14 +15,20 @@ class CarShowPage extends StatefulWidget {
 }
 
 class _CarShowPageState extends State<CarShowPage> {
-  late Future<Map<String, dynamic>> _futureCar;
+  Future<Map<String, dynamic>>? _futureCar;
   final NumberFormat _formatter =
       NumberFormat.currency(symbol: '\$', decimalDigits: 0);
 
   @override
   void initState() {
     super.initState();
-    _futureCar = fetchCar(widget.carId);
+    _fetchCarData();
+  }
+
+  Future<void> _fetchCarData() async {
+    setState(() {
+      _futureCar = fetchCar(widget.carId);
+    });
   }
 
   Future<Map<String, dynamic>> fetchCar(int carId) async {
@@ -151,14 +157,15 @@ class _CarShowPageState extends State<CarShowPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: () async {
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
                                 CarEditPage(carId: widget.carId),
                           ),
                         );
+                        _fetchCarData(); // Refresh data after editing
                       },
                       child: Text('Edit Car'),
                     ),
