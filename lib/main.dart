@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:car_club_rocknrome/screens/car_show_page.dart';
 import 'package:intl/intl.dart';
+import 'screens/trips_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -76,12 +77,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _fetchData(); // Fetch data again when dependencies change
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -115,6 +110,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => TripsPage()));
+        },
+        tooltip: 'View Trips',
+        child: Icon(Icons.directions_car),
+      ),
     );
   }
 }
