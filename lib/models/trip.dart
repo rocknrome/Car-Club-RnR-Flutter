@@ -4,8 +4,8 @@ class Trip {
   final DateTime beginDate;
   final DateTime endDate;
   final List<String> participants;
-  final Map<String, dynamic> beginPoint;
-  final Map<String, dynamic> endPoint;
+  final Map<String, dynamic>? beginPoint; // Made nullable
+  final Map<String, dynamic>? endPoint; // Made nullable
   final String imageUrl;
 
   Trip({
@@ -14,8 +14,8 @@ class Trip {
     required this.beginDate,
     required this.endDate,
     required this.participants,
-    required this.beginPoint,
-    required this.endPoint,
+    this.beginPoint,
+    this.endPoint,
     this.imageUrl = '',
   });
 
@@ -26,8 +26,12 @@ class Trip {
       beginDate: DateTime.parse(json['begin_date']),
       endDate: DateTime.parse(json['end_date']),
       participants: List<String>.from(json['participants']),
-      beginPoint: json['begin_point'],
-      endPoint: json['end_point'],
+      beginPoint: json['begin_point'] != null
+          ? Map<String, dynamic>.from(json['begin_point'])
+          : null,
+      endPoint: json['end_point'] != null
+          ? Map<String, dynamic>.from(json['end_point'])
+          : null,
       imageUrl: json['image_url'] ?? '',
     );
   }
