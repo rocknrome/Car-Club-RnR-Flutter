@@ -1,14 +1,16 @@
 class Trip {
+  final int? id;
   final String title;
   final String description;
   final DateTime beginDate;
   final DateTime endDate;
   final List<String> participants;
-  final Map<String, dynamic>? beginPoint; // Made nullable
-  final Map<String, dynamic>? endPoint; // Made nullable
+  final Map<String, dynamic>? beginPoint;
+  final Map<String, dynamic>? endPoint;
   final String imageUrl;
 
   Trip({
+    this.id,
     required this.title,
     required this.description,
     required this.beginDate,
@@ -21,6 +23,7 @@ class Trip {
 
   factory Trip.fromJson(Map<String, dynamic> json) {
     return Trip(
+      id: json['id'],
       title: json['title'],
       description: json['description'] ?? '',
       beginDate: DateTime.parse(json['begin_date']),
@@ -34,5 +37,18 @@ class Trip {
           : null,
       imageUrl: json['image_url'] ?? '',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'begin_date': beginDate.toIso8601String(),
+      'end_date': endDate.toIso8601String(),
+      'participants': participants,
+      'begin_point': beginPoint,
+      'end_point': endPoint,
+      'image_url': imageUrl,
+    };
   }
 }

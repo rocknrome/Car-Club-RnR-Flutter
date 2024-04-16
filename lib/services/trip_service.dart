@@ -15,4 +15,45 @@ class TripService {
       throw Exception('Failed to load trips');
     }
   }
+
+  Future<void> addTrip(Trip trip) async {
+    final response = await http.post(
+      Uri.parse('https://car-club-model-2-be.onrender.com/trips'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(trip.toJson()),
+    );
+
+    if (response.statusCode != 201) {
+      throw Exception('Failed to add trip');
+    }
+  }
+
+  Future<void> updateTrip(int id, Trip updatedTrip) async {
+    final response = await http.put(
+      Uri.parse('https://car-club-model-2-be.onrender.com/trips/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(updatedTrip.toJson()),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update trip');
+    }
+  }
+
+  Future<void> deleteTrip(int id) async {
+    final response = await http.delete(
+      Uri.parse('https://car-club-model-2-be.onrender.com/trips/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete trip');
+    }
+  }
 }
