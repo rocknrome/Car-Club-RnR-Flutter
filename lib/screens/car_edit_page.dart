@@ -68,7 +68,6 @@ class _CarEditPageState extends State<CarEditPage> {
         _photoUrlController.text = carData['photo_url'];
       });
     } else {
-      // Handle error
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Failed to fetch car details!'),
         duration: Duration(seconds: 2),
@@ -98,17 +97,13 @@ class _CarEditPageState extends State<CarEditPage> {
     );
 
     if (response.statusCode == 200) {
-      // Show SnackBar
       ScaffoldMessenger.of(context)
-          .showSnackBar(
-            SnackBar(
-              content: Text('Car details updated successfully!'),
-              duration: Duration(seconds: 2),
-            ),
-          )
+          .showSnackBar(SnackBar(
+            content: Text('Car details updated successfully!'),
+            duration: Duration(seconds: 2),
+          ))
           .closed
           .then((_) {
-        // Navigate back to CarShowPage
         Navigator.of(context).pop();
       });
     } else {
@@ -124,59 +119,54 @@ class _CarEditPageState extends State<CarEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text('Edit Car'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Edit Car ID: ${widget.carId}',
-                style: TextStyle(fontSize: 20)),
-            SizedBox(height: 20),
-            TextFormField(
-              controller: _makeController,
-              decoration: InputDecoration(labelText: 'Make'),
-            ),
-            TextFormField(
-              controller: _modelController,
-              decoration: InputDecoration(labelText: 'Model'),
-            ),
-            TextFormField(
-              controller: _colorController,
-              decoration: InputDecoration(labelText: 'Color'),
-            ),
-            TextFormField(
-              controller: _yearController,
-              decoration: InputDecoration(labelText: 'Year'),
-              keyboardType: TextInputType.number,
-            ),
-            TextFormField(
-              controller: _mileageController,
-              decoration: InputDecoration(labelText: 'Mileage'),
-              keyboardType: TextInputType.number,
-            ),
-            TextFormField(
-              controller: _priceController,
-              decoration: InputDecoration(labelText: 'Price'),
-            ),
-            TextFormField(
-              controller: _descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
-            ),
-            TextFormField(
-              controller: _photoUrlController,
-              decoration: InputDecoration(labelText: 'Photo URL'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _saveChanges(widget.carId);
-              },
-              child: Text('Save Changes'),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Edit Car ID: ${widget.carId}',
+                  style: TextStyle(fontSize: 20)),
+              SizedBox(height: 20),
+              TextFormField(
+                  controller: _makeController,
+                  decoration: InputDecoration(labelText: 'Make')),
+              TextFormField(
+                  controller: _modelController,
+                  decoration: InputDecoration(labelText: 'Model')),
+              TextFormField(
+                  controller: _colorController,
+                  decoration: InputDecoration(labelText: 'Color')),
+              TextFormField(
+                  controller: _yearController,
+                  decoration: InputDecoration(labelText: 'Year'),
+                  keyboardType: TextInputType.number),
+              TextFormField(
+                  controller: _mileageController,
+                  decoration: InputDecoration(labelText: 'Mileage'),
+                  keyboardType: TextInputType.number),
+              TextFormField(
+                  controller: _priceController,
+                  decoration: InputDecoration(labelText: 'Price')),
+              TextFormField(
+                  controller: _descriptionController,
+                  decoration: InputDecoration(labelText: 'Description')),
+              TextFormField(
+                  controller: _photoUrlController,
+                  decoration: InputDecoration(labelText: 'Photo URL')),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  _saveChanges(widget.carId);
+                },
+                child: Text('Save Changes'),
+              ),
+            ],
+          ),
         ),
       ),
     );

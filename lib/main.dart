@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Used Car Dealership'),
+        title: const Text('Roman\'s Car Club'),
       ),
       body: _cars.isEmpty
           ? const Center(child: CircularProgressIndicator())
