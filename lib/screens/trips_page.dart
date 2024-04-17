@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/trip.dart';
 import '../services/trip_service.dart';
 import 'trip_add_page.dart';
-import 'trip_edit_page.dart';
-import 'trip_delete_dialog.dart';
 import 'trip_details_page.dart';
+import 'trip_edit_page.dart';
 
 class TripsPage extends StatefulWidget {
   @override
@@ -17,7 +16,7 @@ class _TripsPageState extends State<TripsPage> {
   @override
   void initState() {
     super.initState();
-    futureTrips = TripService().fetchTrips();
+    _refreshTrips();
   }
 
   void _refreshTrips() {
@@ -50,7 +49,11 @@ class _TripsPageState extends State<TripsPage> {
       body: FutureBuilder<List<Trip>>(
         future: futureTrips,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasData) {
             List<Trip> trips = snapshot.data!;
             return ListView.builder(
               itemCount: trips.length,
@@ -74,11 +77,14 @@ class _TripsPageState extends State<TripsPage> {
                       maxLines: 2,
                     ),
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => TripDetailPage(trip: trip),
-                        ),
-                      );
+                      Navigator.of(context)
+                          .push(
+                            MaterialPageRoute(
+                              builder: (context) => TripDetailPage(trip: trip),
+                            ),
+                          )
+                          .then((_) =>
+                              _refreshTrips()); // Refresh trips after returning from detail page
                     },
                   ),
                 );
@@ -90,7 +96,7 @@ class _TripsPageState extends State<TripsPage> {
             );
           }
           return Center(
-            child: CircularProgressIndicator(),
+            child: Text('No trips found.'),
           );
         },
       ),

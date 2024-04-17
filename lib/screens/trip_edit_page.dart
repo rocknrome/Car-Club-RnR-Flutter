@@ -66,7 +66,7 @@ class _TripEditPageState extends State<TripEditPage> {
 
     await TripService().updateTrip(tripId, updatedTrip);
 
-    Navigator.pop(context);
+    Navigator.pop(context, true); // Return true to indicate changes were saved
   }
 
   @override
