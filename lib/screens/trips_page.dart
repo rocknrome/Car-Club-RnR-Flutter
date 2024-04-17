@@ -26,6 +26,10 @@ class _TripsPageState extends State<TripsPage> {
     });
   }
 
+  String _formatDate(DateTime date) {
+    return '${date.month}/${date.day}/${date.year}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,50 +58,20 @@ class _TripsPageState extends State<TripsPage> {
                 Trip trip = trips[index];
                 return Card(
                   child: ListTile(
-                    leading: trip.imageUrl.isNotEmpty ==
-                            true // Use null-safe operator
-                        ? Image.network(trip.imageUrl,
+                    leading: trip.imageUrl.isNotEmpty == true
+                        ? Image.network(
+                            trip.imageUrl,
                             width: 100,
-                            fit: BoxFit.cover) // Use null-safe operator
+                            fit: BoxFit.cover,
+                          )
                         : Icon(Icons.image, size: 50),
                     title: Text(trip.title),
                     subtitle: Text(
-                      '${trip.description}\nFrom: ${trip.beginDate.toLocal()} To: ${trip.endDate.toLocal()}',
+                      '${trip.description}\nFrom: ${_formatDate(trip.beginDate)} To: ${_formatDate(trip.endDate)}',
                       style: TextStyle(
-                          fontSize: 12), // Optional: Adjust subtitle font size
-                      maxLines: 2, // Optional: Adjust subtitle line count
-                    ), // Consider adjusting subtitle formatting for better display
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => TripEditPage(trip: trip),
-                              ),
-                            ).then((_) => _refreshTrips());
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => TripDeleteDialog(
-                                tripId: trip.id,
-                                onDelete: (bool result) {
-                                  if (result == true) {
-                                    _refreshTrips();
-                                  }
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+                        fontSize: 12,
+                      ),
+                      maxLines: 2,
                     ),
                     onTap: () {
                       Navigator.of(context).push(

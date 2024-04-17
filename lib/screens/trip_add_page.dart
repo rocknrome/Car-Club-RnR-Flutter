@@ -1,7 +1,8 @@
-import 'dart:convert'; // Import convert for jsonDecode
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models/trip.dart';
 import '../services/trip_service.dart';
+import 'trips_page.dart';
 
 class TripAddPage extends StatefulWidget {
   @override
@@ -18,11 +19,14 @@ class _TripAddPageState extends State<TripAddPage> {
   final TextEditingController _endPointController = TextEditingController();
   final TextEditingController _imageUrlController = TextEditingController();
 
-  Future<void> _addTrip() async {
+  final DateFormat dateFormat = DateFormat('MM-dd-yyyy');
+
+  Future<void> _addTrip(BuildContext context) async {
     final String title = _titleController.text.trim();
     final String description = _descriptionController.text.trim();
-    final DateTime beginDate = DateTime.parse(_beginDateController.text.trim());
-    final DateTime endDate = DateTime.parse(_endDateController.text.trim());
+    final DateTime beginDate =
+        dateFormat.parse(_beginDateController.text.trim());
+    final DateTime endDate = dateFormat.parse(_endDateController.text.trim());
     final List<String> participants =
         _participantsController.text.split(',').map((e) => e.trim()).toList();
     final String imageUrl = _imageUrlController.text.trim();
@@ -39,11 +43,19 @@ class _TripAddPageState extends State<TripAddPage> {
       updatedAt: DateTime.now(),
     );
 
-    // Call the TripService to add the new trip
     await TripService().addTrip(newTrip);
 
-    // Navigate back to the previous screen
-    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Trip added successfully'),
+      ),
+    );
+
+    // Navigate back to the trip list
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => TripsPage()),
+    );
   }
 
   @override
@@ -69,12 +81,12 @@ class _TripAddPageState extends State<TripAddPage> {
             SizedBox(height: 16.0),
             TextField(
               controller: _beginDateController,
-              decoration: InputDecoration(labelText: 'Begin Date'),
+              decoration: InputDecoration(labelText: 'Begin Date (MM-dd-yyyy)'),
             ),
             SizedBox(height: 16.0),
             TextField(
               controller: _endDateController,
-              decoration: InputDecoration(labelText: 'End Date'),
+              decoration: InputDecoration(labelText: 'End Date (MM-dd-yyyy)'),
             ),
             SizedBox(height: 16.0),
             TextField(
@@ -99,7 +111,7 @@ class _TripAddPageState extends State<TripAddPage> {
             ),
             SizedBox(height: 32.0),
             ElevatedButton(
-              onPressed: _addTrip,
+              onPressed: () => _addTrip(context),
               child: Text('Add Trip'),
             ),
           ],

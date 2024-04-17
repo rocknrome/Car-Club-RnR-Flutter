@@ -51,9 +51,6 @@ class _TripEditPageState extends State<TripEditPage> {
       return;
     }
 
-    // Print statement to debug the value of tripId
-    // print('Trip ID: $tripId');
-
     final updatedTrip = Trip(
       id: tripId,
       title: _titleController.text,
@@ -67,8 +64,7 @@ class _TripEditPageState extends State<TripEditPage> {
       updatedAt: DateTime.now(),
     );
 
-    await TripService()
-        .updateTrip(tripId, updatedTrip); // Pass tripId as String
+    await TripService().updateTrip(tripId, updatedTrip);
 
     Navigator.pop(context);
   }
@@ -104,6 +100,9 @@ class _TripEditPageState extends State<TripEditPage> {
               controller: _participantsController,
               decoration:
                   InputDecoration(labelText: 'Participants (comma-separated)'),
+              onChanged: (value) {
+                setState(() {}); // Update state to reflect changes
+              },
             ),
             TextField(
               controller: _imageUrlController,

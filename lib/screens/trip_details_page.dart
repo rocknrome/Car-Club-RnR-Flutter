@@ -33,7 +33,7 @@ class TripDetailPage extends StatelessWidget {
             SizedBox(height: 8),
             Text('${trip.description}', style: TextStyle(fontSize: 18)),
             SizedBox(height: 8),
-            Text('Started:  ${formatter.format(trip.beginDate)}'),
+            Text('Started:   ${formatter.format(trip.beginDate)}'),
             Text('Finished: ${formatter.format(trip.endDate)}'),
             SizedBox(height: 8),
             Text('Participants:',
