@@ -20,10 +20,20 @@ class TripDeleteDialog extends StatelessWidget {
             TripService().deleteTrip(tripId).then((_) {
               onDelete(true); // Notifying parent widget of successful deletion
               Navigator.of(context).pop(); // Pop the dialog
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Trip deleted successfully.'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
             }).catchError((error) {
               // Handle errors and show a snackbar with the error message
               ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Failed to delete trip: $error')));
+                SnackBar(
+                  content: Text('Failed to delete trip: $error'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
             });
           },
           child: Text('Delete'),
