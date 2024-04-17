@@ -14,8 +14,10 @@ class TripEditPage extends StatefulWidget {
 class _TripEditPageState extends State<TripEditPage> {
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
-
-  // Add more controllers here
+  late TextEditingController _beginDateController;
+  late TextEditingController _endDateController;
+  late TextEditingController _participantsController;
+  late TextEditingController _imageUrlController;
 
   @override
   void initState() {
@@ -23,7 +25,52 @@ class _TripEditPageState extends State<TripEditPage> {
     _titleController = TextEditingController(text: widget.trip.title);
     _descriptionController =
         TextEditingController(text: widget.trip.description);
-    // Initialize controllers for extra fields
+    _beginDateController =
+        TextEditingController(text: widget.trip.beginDate.toString());
+    _endDateController =
+        TextEditingController(text: widget.trip.endDate.toString());
+    _participantsController =
+        TextEditingController(text: widget.trip.participants.join(', '));
+    _imageUrlController = TextEditingController(text: widget.trip.imageUrl);
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    _beginDateController.dispose();
+    _endDateController.dispose();
+    _participantsController.dispose();
+    _imageUrlController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _saveChanges(String tripId) async {
+    if (tripId.isEmpty) {
+      print('Trip ID is empty');
+      return;
+    }
+
+    // Print statement to debug the value of tripId
+    // print('Trip ID: $tripId');
+
+    final updatedTrip = Trip(
+      id: tripId,
+      title: _titleController.text,
+      description: _descriptionController.text,
+      beginDate: DateTime.parse(_beginDateController.text),
+      endDate: DateTime.parse(_endDateController.text),
+      participants:
+          _participantsController.text.split(',').map((e) => e.trim()).toList(),
+      imageUrl: _imageUrlController.text,
+      createdAt: widget.trip.createdAt,
+      updatedAt: DateTime.now(),
+    );
+
+    await TripService()
+        .updateTrip(tripId, updatedTrip); // Pass tripId as String
+
+    Navigator.pop(context);
   }
 
   @override
@@ -45,37 +92,33 @@ class _TripEditPageState extends State<TripEditPage> {
               controller: _descriptionController,
               decoration: InputDecoration(labelText: 'Description'),
             ),
-            // Add more form fields here
-            SizedBox(height: 16),
+            TextField(
+              controller: _beginDateController,
+              decoration: InputDecoration(labelText: 'Begin Date'),
+            ),
+            TextField(
+              controller: _endDateController,
+              decoration: InputDecoration(labelText: 'End Date'),
+            ),
+            TextField(
+              controller: _participantsController,
+              decoration:
+                  InputDecoration(labelText: 'Participants (comma-separated)'),
+            ),
+            TextField(
+              controller: _imageUrlController,
+              decoration: InputDecoration(labelText: 'Image URL'),
+            ),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Update and save the edited trip
-                Trip updatedTrip = Trip(
-                  title: _titleController.text,
-                  description: _descriptionController.text,
-                  beginDate: widget.trip.beginDate,
-                  endDate: widget.trip.endDate,
-                  participants: widget.trip.participants,
-                );
-                int id = widget.trip.id ??
-                    0; // Provide a default value or handle null case
-                TripService().updateTrip(id, updatedTrip).then((_) {
-                  Navigator.pop(
-                      context); // Navigate back to the trips page after updating the trip
-                });
+                _saveChanges(widget.trip.id);
               },
-              child: Text('Save'),
+              child: Text('Save Changes'),
             ),
           ],
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
-    super.dispose();
   }
 }

@@ -28,14 +28,13 @@ class TripDetailPage extends StatelessWidget {
                     width: double.infinity, fit: BoxFit.cover)
                 : SizedBox(height: 200, child: Icon(Icons.image, size: 200)),
             SizedBox(height: 16),
-            Text('Title: ${trip.title}',
+            Text('${trip.title}',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
-            Text('Description: ${trip.description}',
-                style: TextStyle(fontSize: 18)),
+            Text('${trip.description}', style: TextStyle(fontSize: 18)),
             SizedBox(height: 8),
-            Text('Begin Date: ${formatter.format(trip.beginDate)}'),
-            Text('End Date: ${formatter.format(trip.endDate)}'),
+            Text('Started:  ${formatter.format(trip.beginDate)}'),
+            Text('Finished: ${formatter.format(trip.endDate)}'),
             SizedBox(height: 8),
             Text('Participants:',
                 style: TextStyle(fontWeight: FontWeight.bold)),
@@ -64,14 +63,7 @@ class TripDetailPage extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    if (trip.id != null) {
-                      _showDeleteDialog(context,
-                          trip.id!); // Using the null assertion operator because we checked for null
-                    } else {
-                      // Handle the null case/ show a message or log an error
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("Trip ID is null, cannot delete.")));
-                    }
+                    _showDeleteDialog(context, trip.id);
                   },
                   child: Text('Delete Trip'),
                 ),
@@ -94,7 +86,7 @@ class TripDetailPage extends StatelessWidget {
     );
   }
 
-  void _showDeleteDialog(BuildContext context, int tripId) {
+  void _showDeleteDialog(BuildContext context, String tripId) {
     showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(

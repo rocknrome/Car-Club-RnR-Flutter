@@ -30,7 +30,7 @@ class TripService {
     }
   }
 
-  Future<void> updateTrip(int id, Trip updatedTrip) async {
+  Future<void> updateTrip(String id, Trip updatedTrip) async {
     final response = await http.put(
       Uri.parse('https://car-club-model-2-be.onrender.com/trips/$id'),
       headers: <String, String>{
@@ -44,7 +44,7 @@ class TripService {
     }
   }
 
-  Future<void> deleteTrip(int id) async {
+  Future<void> deleteTrip(String id) async {
     final response = await http.delete(
       Uri.parse('https://car-club-model-2-be.onrender.com/trips/$id'),
       headers: <String, String>{

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/trip_service.dart';
 
 class TripDeleteDialog extends StatelessWidget {
-  final int tripId;
+  final String tripId;
 
   const TripDeleteDialog({Key? key, required this.tripId}) : super(key: key);
 
@@ -15,15 +15,17 @@ class TripDeleteDialog extends StatelessWidget {
         TextButton(
           onPressed: () {
             TripService().deleteTrip(tripId).then((_) {
-              Navigator.pop(context, true); // Signal deletion success
+              Navigator.of(context).pop(true); // Pop the dialog
+            }).catchError((error) {
+              // Handle errors and show a snackbar with the error message
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Failed to delete trip: $error')));
             });
           },
           child: Text('Delete'),
         ),
         TextButton(
-          onPressed: () {
-            Navigator.pop(context, false); // Cancel deletion
-          },
+          onPressed: () => Navigator.of(context).pop(false),
           child: Text('Cancel'),
         ),
       ],

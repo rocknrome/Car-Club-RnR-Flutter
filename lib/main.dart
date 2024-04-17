@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
       home: const MyHomePage(),
       routes: {
         '/carShow': (context) => const CarShowPage(
-            carId: 0), // Initially passing 0, replace it with actual car ID
+            carId:
+                0), // Initially passing 0, will replace it with actual car ID later
       },
     );
   }

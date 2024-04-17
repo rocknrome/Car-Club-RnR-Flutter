@@ -83,7 +83,7 @@ class _TripsPageState extends State<TripsPage> {
                             showDialog(
                               context: context,
                               builder: (context) =>
-                                  TripDeleteDialog(tripId: trip.id!),
+                                  TripDeleteDialog(tripId: trip.id),
                             ).then((result) {
                               if (result == true) {
                                 _refreshTrips(); // Refresh after deletion
