@@ -32,3 +32,4 @@ class TripDeleteDialog extends StatelessWidget {
     );
   }
 }
+  
