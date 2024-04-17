@@ -20,11 +20,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(),
-      routes: {
-        '/carShow': (context) => const CarShowPage(
-            carId:
-                0), // Initially passing 0, will replace it with actual car ID later
-      },
     );
   }
 }
@@ -36,7 +31,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   List<Car> _cars = [];
   final NumberFormat _formatter =
       NumberFormat('#,##,###'); // Formatter for mileage
@@ -44,7 +39,21 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _fetchData();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _fetchData(); // Refresh the car list whenever the app comes back to the foreground
+    }
   }
 
   Future<void> _fetchData() async {
@@ -53,19 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
           Uri.parse('https://used-car-dealership-be.onrender.com/api/cars/'));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
-        final List<Car> cars = data
-            .map((carJson) => Car(
-                  id: carJson['id'],
-                  make: carJson['make'],
-                  model: carJson['model'],
-                  color: carJson['color'],
-                  year: carJson['year'],
-                  mileage: carJson['mileage'],
-                  price: double.parse(carJson['price']),
-                  description: carJson['description'],
-                  photoUrl: carJson['photo_url'],
-                ))
-            .toList();
+        final List<Car> cars =
+            data.map((carJson) => Car.fromJson(carJson)).toList();
         setState(() {
           _cars = cars;
         });
@@ -73,7 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
         throw Exception('Failed to load data');
       }
     } catch (error) {
-      // Handle error accordingly
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error fetching car data: $error')));
     }
   }
 
@@ -145,4 +144,18 @@ class Car {
     required this.description,
     required this.photoUrl,
   });
+
+  factory Car.fromJson(Map<String, dynamic> json) {
+    return Car(
+      id: json['id'],
+      make: json['make'],
+      model: json['model'],
+      color: json['color'],
+      year: json['year'],
+      mileage: json['mileage'],
+      price: double.parse(json['price']),
+      description: json['description'],
+      photoUrl: json['photo_url'],
+    );
+  }
 }
