@@ -3,8 +3,11 @@ import '../services/trip_service.dart';
 
 class TripDeleteDialog extends StatelessWidget {
   final String tripId;
+  final Function(bool) onDelete; // Callback function to handle delete result
 
-  const TripDeleteDialog({Key? key, required this.tripId}) : super(key: key);
+  const TripDeleteDialog(
+      {Key? key, required this.tripId, required this.onDelete})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,8 @@ class TripDeleteDialog extends StatelessWidget {
         TextButton(
           onPressed: () {
             TripService().deleteTrip(tripId).then((_) {
-              Navigator.of(context).pop(true); // Pop the dialog
+              onDelete(true); // Notifying parent widget of successful deletion
+              Navigator.of(context).pop(); // Pop the dialog
             }).catchError((error) {
               // Handle errors and show a snackbar with the error message
               ScaffoldMessenger.of(context).showSnackBar(
@@ -25,11 +29,13 @@ class TripDeleteDialog extends StatelessWidget {
           child: Text('Delete'),
         ),
         TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
+          onPressed: () {
+            onDelete(false); // Notify parent widget of cancellation
+            Navigator.of(context).pop(); // Pop the dialog
+          },
           child: Text('Cancel'),
         ),
       ],
     );
   }
 }
-  

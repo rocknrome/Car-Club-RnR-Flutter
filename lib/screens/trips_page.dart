@@ -54,15 +54,19 @@ class _TripsPageState extends State<TripsPage> {
                 Trip trip = trips[index];
                 return Card(
                   child: ListTile(
-                    leading: trip.imageUrl.isNotEmpty
+                    leading: trip.imageUrl.isNotEmpty ==
+                            true // Use null-safe operator
                         ? Image.network(trip.imageUrl,
-                            width: 100, fit: BoxFit.cover)
+                            width: 100,
+                            fit: BoxFit.cover) // Use null-safe operator
                         : Icon(Icons.image, size: 50),
                     title: Text(trip.title),
                     subtitle: Text(
                       '${trip.description}\nFrom: ${trip.beginDate.toLocal()} To: ${trip.endDate.toLocal()}',
-                    ),
-                    isThreeLine: true,
+                      style: TextStyle(
+                          fontSize: 12), // Optional: Adjust subtitle font size
+                      maxLines: 2, // Optional: Adjust subtitle line count
+                    ), // Consider adjusting subtitle formatting for better display
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -82,13 +86,15 @@ class _TripsPageState extends State<TripsPage> {
                           onPressed: () {
                             showDialog(
                               context: context,
-                              builder: (context) =>
-                                  TripDeleteDialog(tripId: trip.id),
-                            ).then((result) {
-                              if (result == true) {
-                                _refreshTrips(); // Refresh after deletion
-                              }
-                            });
+                              builder: (context) => TripDeleteDialog(
+                                tripId: trip.id,
+                                onDelete: (bool result) {
+                                  if (result == true) {
+                                    _refreshTrips();
+                                  }
+                                },
+                              ),
+                            );
                           },
                         ),
                       ],

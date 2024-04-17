@@ -25,15 +25,25 @@ class Trip {
 
   factory Trip.fromJson(Map<String, dynamic> json) {
     return Trip(
-      id: json['_id'],
-      title: json['title'],
-      description: json['description'],
-      beginDate: DateTime.parse(json['begin_date']),
-      endDate: DateTime.parse(json['end_date']),
-      participants: List<String>.from(json['participants']),
-      imageUrl: json['image_url'],
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
+      id: json['_id'] ?? '',
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
+      beginDate: json['begin_date'] != null
+          ? DateTime.parse(json['begin_date'])
+          : DateTime.now(),
+      endDate: json['end_date'] != null
+          ? DateTime.parse(json['end_date'])
+          : DateTime.now(),
+      participants: json['participants'] != null
+          ? List<String>.from(json['participants'])
+          : [],
+      imageUrl: json['image_url'] ?? '',
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : DateTime.now(),
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'])
+          : DateTime.now(),
     );
   }
 
