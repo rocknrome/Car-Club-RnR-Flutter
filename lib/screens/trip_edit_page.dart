@@ -75,7 +75,7 @@ class _TripEditPageState extends State<TripEditPage> {
       appBar: AppBar(
         title: Text('Edit Trip'),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,9 +100,6 @@ class _TripEditPageState extends State<TripEditPage> {
               controller: _participantsController,
               decoration:
                   InputDecoration(labelText: 'Participants (comma-separated)'),
-              onChanged: (value) {
-                setState(() {}); // Update state to reflect changes
-              },
             ),
             TextField(
               controller: _imageUrlController,

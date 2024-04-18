@@ -19,7 +19,7 @@ class _TripAddPageState extends State<TripAddPage> {
   final TextEditingController _endPointController = TextEditingController();
   final TextEditingController _imageUrlController = TextEditingController();
 
-  final DateFormat dateFormat = DateFormat('MM-dd-yyyy');
+  final DateFormat dateFormat = DateFormat('mm-dd-yyyy');
 
   Future<void> _addTrip(BuildContext context) async {
     final String title = _titleController.text.trim();
@@ -71,43 +71,44 @@ class _TripAddPageState extends State<TripAddPage> {
           children: [
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: InputDecoration(labelText: 'Title:'),
             ),
             SizedBox(height: 16.0),
             TextField(
               controller: _descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
+              decoration: InputDecoration(labelText: 'Description:'),
             ),
             SizedBox(height: 16.0),
             TextField(
               controller: _beginDateController,
-              decoration: InputDecoration(labelText: 'Begin Date (MM-dd-yyyy)'),
+              decoration:
+                  InputDecoration(labelText: 'Begin Date: (mm-dd-yyyy)'),
             ),
             SizedBox(height: 16.0),
             TextField(
               controller: _endDateController,
-              decoration: InputDecoration(labelText: 'End Date (MM-dd-yyyy)'),
+              decoration: InputDecoration(labelText: 'End Date: (mm-dd-yyyy)'),
             ),
             SizedBox(height: 16.0),
             TextField(
               controller: _participantsController,
               decoration:
-                  InputDecoration(labelText: 'Participants (comma-separated)'),
+                  InputDecoration(labelText: 'Participants: (comma-separated)'),
             ),
             SizedBox(height: 16.0),
             TextField(
               controller: _beginPointController,
-              decoration: InputDecoration(labelText: 'Begin Point (JSON)'),
+              decoration: InputDecoration(labelText: 'Begin Point:'),
             ),
             SizedBox(height: 16.0),
             TextField(
               controller: _endPointController,
-              decoration: InputDecoration(labelText: 'End Point (JSON)'),
+              decoration: InputDecoration(labelText: 'End Point:'),
             ),
             SizedBox(height: 16.0),
             TextField(
               controller: _imageUrlController,
-              decoration: InputDecoration(labelText: 'Image URL'),
+              decoration: InputDecoration(labelText: 'Image URL:'),
             ),
             SizedBox(height: 32.0),
             ElevatedButton(

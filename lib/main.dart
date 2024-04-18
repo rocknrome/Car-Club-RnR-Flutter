@@ -31,29 +31,14 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+class _MyHomePageState extends State<MyHomePage> {
   List<Car> _cars = [];
-  final NumberFormat _formatter =
-      NumberFormat('#,##,###'); // Formatter for mileage
+  final NumberFormat _formatter = NumberFormat('#,##,###');
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     _fetchData();
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      _fetchData(); // Refresh the car list whenever the app comes back to the foreground
-    }
   }
 
   Future<void> _fetchData() async {
@@ -97,7 +82,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       MaterialPageRoute(
                         builder: (context) => CarShowPage(carId: car.id),
                       ),
-                    );
+                    ).then((_) {
+                      _fetchData(); // Refetch the data when coming back to this page
+                    });
                   },
                   child: Card(
                     child: ListTile(
@@ -148,14 +135,14 @@ class Car {
   factory Car.fromJson(Map<String, dynamic> json) {
     return Car(
       id: json['id'],
-      make: json['make'],
-      model: json['model'],
-      color: json['color'],
-      year: json['year'],
-      mileage: json['mileage'],
-      price: double.parse(json['price']),
-      description: json['description'],
-      photoUrl: json['photo_url'],
+      make: json['make'] ?? 'N/A',
+      model: json['model'] ?? 'N/A',
+      color: json['color'] ?? 'N/A',
+      year: json['year'] ?? 0,
+      mileage: json['mileage'] ?? 0,
+      price: double.parse(json['price'].toString() ?? '0'),
+      description: json['description'] ?? 'No description available',
+      photoUrl: json['photo_url'] ?? 'https://example.com/default-image.jpg',
     );
   }
 }
