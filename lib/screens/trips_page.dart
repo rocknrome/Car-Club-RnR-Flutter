@@ -33,7 +33,7 @@ class _TripsPageState extends State<TripsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Trips'),
+        title: Text('Trips of the Club'),
         actions: [
           IconButton(
             icon: Icon(Icons.add),

@@ -54,6 +54,15 @@ class _CarListPageState extends State<CarListPage> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Cars of the Club"),
+      ),
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
     if (_isLoading) {
       return Center(child: CircularProgressIndicator());
     } else if (_errorMessage.isNotEmpty) {
