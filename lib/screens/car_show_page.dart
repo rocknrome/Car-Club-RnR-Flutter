@@ -96,100 +96,102 @@ class _CarShowPageState extends State<CarShowPage> {
       appBar: AppBar(
         title: Text('Car Details'),
       ),
-      body: FutureBuilder<Map<String, dynamic>>(
-        future: _futureCar,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            final car = snapshot.data!;
-            final formattedMileage = _formatter.format(car['mileage']);
-            final formattedPrice =
-                _formatter.format(double.parse(car['price']));
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.network(car['photo_url']),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    '${car['make']} ${car['model']}',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: FutureBuilder<Map<String, dynamic>>(
+          future: _futureCar,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else {
+              final car = snapshot.data!;
+              final formattedMileage = _formatter.format(car['mileage']);
+              final formattedPrice =
+                  _formatter.format(double.parse(car['price']));
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.network(car['photo_url'], fit: BoxFit.cover),
+                  SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      '${car['make']} ${car['model']}',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    'Color: ${car['color']}',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    'Year: ${car['year']}',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    'Mileage: $formattedMileage miles',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    'Price: $formattedPrice',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                CarEditPage(carId: widget.carId),
-                          ),
-                        );
-                        _fetchCarData(); // Refresh data after editing
-                      },
-                      child: Text('Edit Car'),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      'Color: ${car['color']}',
+                      style: TextStyle(fontSize: 18),
                     ),
-                    ElevatedButton(
-                      onPressed: _deleteCar, // Call _deleteCar method
-                      child: Text('Delete Car'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      'Year: ${car['year']}',
+                      style: TextStyle(fontSize: 18),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddCarPage(),
-                          ),
-                        );
-                      },
-                      child: Text('Add Car'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      'Mileage: $formattedMileage miles',
+                      style: TextStyle(fontSize: 18),
                     ),
-                  ],
-                ),
-              ],
-            );
-          }
-        },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      'Price: $formattedPrice',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CarEditPage(carId: widget.carId),
+                            ),
+                          );
+                          _fetchCarData(); // Refresh data after editing
+                        },
+                        child: Text('Edit Car'),
+                      ),
+                      ElevatedButton(
+                        onPressed: _deleteCar, // Call _deleteCar method
+                        child: Text('Delete Car'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddCarPage(),
+                            ),
+                          );
+                        },
+                        child: Text('Add Car'),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            }
+          },
+        ),
       ),
     );
   }
