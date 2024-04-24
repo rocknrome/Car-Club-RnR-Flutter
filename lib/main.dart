@@ -145,4 +145,4 @@ class Car {
       photoUrl: json['photo_url'] ?? 'https://example.com/default-image.jpg',
     );
   }
-}
+}  
