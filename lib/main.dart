@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
       title: 'Car Club',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const MyHomePage(),
     );
@@ -33,19 +32,23 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _widgetOptions = <Widget>[
-    Center(
-        child: Image.asset(
-            'assets/mercedes_green.png')), // Image centered on the home screen
-    CarListPage(), // Page for listing cars
-    TripsPage(), // Page for listing trips
-    ContactPage(), // Page for contact information
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  final List<Widget> _widgetOptions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _widgetOptions.addAll([
+      HomeWidget(onSwipeLeft: () => _onItemTapped(1)),
+      CarListPage(),
+      TripsPage(),
+      ContactPage(),
+    ]);
   }
 
   @override
@@ -76,9 +79,41 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
-        unselectedItemColor: Colors.grey[600],
+        unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
+      ),
+    );
+  }
+}
+
+class HomeWidget extends StatelessWidget {
+  final VoidCallback onSwipeLeft;
+
+  HomeWidget({required this.onSwipeLeft});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onHorizontalDragEnd: (details) {
+        if (details.primaryVelocity! < 0) {
+          // Detect swipe left
+          onSwipeLeft();
+        }
+      },
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset('assets/mercedes_green.png'),
+            Text(
+              "Roman's Car Club",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

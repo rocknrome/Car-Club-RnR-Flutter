@@ -4,6 +4,8 @@ import '../services/trip_service.dart';
 import 'trip_add_page.dart';
 import 'trip_details_page.dart';
 import 'trip_edit_page.dart';
+import 'car_list_page.dart';
+import 'contact_page.dart'; // Ensure this import is correct
 
 class TripsPage extends StatefulWidget {
   @override
@@ -33,7 +35,7 @@ class _TripsPageState extends State<TripsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Trips of the Club'),
+        title: Text('Rally Chronicles'),
         actions: [
           IconButton(
             icon: Icon(Icons.add),
@@ -46,60 +48,63 @@ class _TripsPageState extends State<TripsPage> {
           ),
         ],
       ),
-      body: FutureBuilder<List<Trip>>(
-        future: futureTrips,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasData) {
-            List<Trip> trips = snapshot.data!;
-            return ListView.builder(
-              itemCount: trips.length,
-              itemBuilder: (context, index) {
-                Trip trip = trips[index];
-                return Card(
-                  child: ListTile(
-                    leading: trip.imageUrl.isNotEmpty == true
-                        ? Image.network(
-                            trip.imageUrl,
-                            width: 100,
-                            fit: BoxFit.cover,
-                          )
-                        : Icon(Icons.image, size: 50),
-                    title: Text(trip.title),
-                    subtitle: Text(
-                      '${trip.description}\nFrom: ${_formatDate(trip.beginDate)} To: ${_formatDate(trip.endDate)}',
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
-                      maxLines: 2,
-                    ),
-                    onTap: () {
-                      Navigator.of(context)
-                          .push(
-                            MaterialPageRoute(
-                              builder: (context) => TripDetailPage(trip: trip),
-                            ),
-                          )
-                          .then((_) =>
-                              _refreshTrips()); // Refresh trips after returning from detail page
-                    },
-                  ),
-                );
-              },
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text("Error: ${snapshot.error}"),
-            );
+      body: GestureDetector(
+        onHorizontalDragEnd: (details) {
+          if (details.primaryVelocity! < 0) {
+            // Swipe left
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ContactPage()));
+          } else if (details.primaryVelocity! > 0) {
+            // Swipe right
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CarListPage()));
           }
-          return Center(
-            child: Text('No trips found.'),
-          );
         },
+        child: _buildTripList(),
       ),
+    );
+  }
+
+  Widget _buildTripList() {
+    return FutureBuilder<List<Trip>>(
+      future: futureTrips,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasData) {
+          List<Trip> trips = snapshot.data!;
+          return ListView.builder(
+            itemCount: trips.length,
+            itemBuilder: (context, index) {
+              Trip trip = trips[index];
+              return Card(
+                child: ListTile(
+                  leading: trip.imageUrl.isNotEmpty == true
+                      ? Image.network(trip.imageUrl,
+                          width: 100, fit: BoxFit.cover)
+                      : Icon(Icons.image, size: 50),
+                  title: Text(trip.title),
+                  subtitle: Text(
+                    '${trip.description}\nFrom: ${_formatDate(trip.beginDate)} To: ${_formatDate(trip.endDate)}',
+                    style: TextStyle(fontSize: 12),
+                    maxLines: 2,
+                  ),
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(
+                            builder: (context) => TripDetailPage(trip: trip)))
+                        .then((_) =>
+                            _refreshTrips()); // Refresh trips after returning from detail page
+                  },
+                ),
+              );
+            },
+          );
+        } else if (snapshot.hasError) {
+          return Center(child: Text("Error: ${snapshot.error}"));
+        }
+        return Center(child: Text('No trips found.'));
+      },
     );
   }
 }
