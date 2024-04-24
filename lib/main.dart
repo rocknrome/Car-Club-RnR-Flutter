@@ -32,23 +32,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
+  final List<Widget> _widgetOptions = [
+    HomeWidget(),
+    CarListPage(),
+    TripsPage(),
+    ContactPage(),
+  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-  }
-
-  final List<Widget> _widgetOptions = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _widgetOptions.addAll([
-      HomeWidget(onSwipeLeft: () => _onItemTapped(1)),
-      CarListPage(),
-      TripsPage(),
-      ContactPage(),
-    ]);
   }
 
   @override
@@ -65,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.car_repair),
+            icon: Icon(Icons.directions_car),
             label: 'Cars',
           ),
           BottomNavigationBarItem(
@@ -87,32 +81,35 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class HomeWidget extends StatelessWidget {
-  final VoidCallback onSwipeLeft;
-
-  HomeWidget({required this.onSwipeLeft});
-
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onHorizontalDragEnd: (details) {
-        if (details.primaryVelocity! < 0) {
-          // Detect swipe left
-          onSwipeLeft();
-        }
-      },
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset('assets/mercedes_green.png'),
-            Text(
-              "Roman's Car Club",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    return Center(
+      child: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height,
+          ),
+          child: IntrinsicHeight(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets/mercedes_green.png',
+                  scale: isLandscape ? 1.5 : 1,
+                ),
+                SizedBox(height: isLandscape ? 10 : 20),
+                Text(
+                  "Roman's Car Club",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

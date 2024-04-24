@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'car_show_page.dart';
 import 'package:intl/intl.dart';
 import '../models/car.dart';
-import 'trips_page.dart'; // Make sure this import is correct
 
 class CarListPage extends StatefulWidget {
   @override
@@ -71,40 +70,31 @@ class _CarListPageState extends State<CarListPage> {
     } else if (_cars.isEmpty) {
       return Center(child: Text('No cars found.'));
     } else {
-      return GestureDetector(
-        onHorizontalDragEnd: (details) {
-          if (details.primaryVelocity! < 0) {
-            // Detect swipe left
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => TripsPage()));
-          }
-        },
-        child: ListView.builder(
-          itemCount: _cars.length,
-          itemBuilder: (context, index) {
-            final car = _cars[index];
-            final formattedMileage = _formatter.format(car.mileage);
-            final formattedPrice = '\$${_formatter.format(car.price)}';
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CarShowPage(carId: car.id),
-                  ),
-                ).then((_) => _fetchData());
-              },
-              child: Card(
-                child: ListTile(
-                  leading: Image.network(car.photoUrl),
-                  title: Text('${car.make} ${car.model}'),
-                  subtitle: Text(
-                      'Color: ${car.color}\nYear: ${car.year}\nMileage: $formattedMileage miles\nPrice: $formattedPrice'),
+      return ListView.builder(
+        itemCount: _cars.length,
+        itemBuilder: (context, index) {
+          final car = _cars[index];
+          final formattedMileage = _formatter.format(car.mileage);
+          final formattedPrice = '\$${_formatter.format(car.price)}';
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CarShowPage(carId: car.id),
                 ),
+              ).then((_) => _fetchData());
+            },
+            child: Card(
+              child: ListTile(
+                leading: Image.network(car.photoUrl),
+                title: Text('${car.make} ${car.model}'),
+                subtitle: Text(
+                    'Color: ${car.color}\nYear: ${car.year}\nMileage: $formattedMileage miles\nPrice: $formattedPrice'),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       );
     }
   }

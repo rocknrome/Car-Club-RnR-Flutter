@@ -5,7 +5,7 @@ import 'trip_add_page.dart';
 import 'trip_details_page.dart';
 import 'trip_edit_page.dart';
 import 'car_list_page.dart';
-import 'contact_page.dart'; // Ensure this import is correct
+import 'contact_page.dart';
 
 class TripsPage extends StatefulWidget {
   @override
@@ -48,20 +48,7 @@ class _TripsPageState extends State<TripsPage> {
           ),
         ],
       ),
-      body: GestureDetector(
-        onHorizontalDragEnd: (details) {
-          if (details.primaryVelocity! < 0) {
-            // Swipe left
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ContactPage()));
-          } else if (details.primaryVelocity! > 0) {
-            // Swipe right
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CarListPage()));
-          }
-        },
-        child: _buildTripList(),
-      ),
+      body: _buildTripList(),
     );
   }
 
