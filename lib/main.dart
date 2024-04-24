@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:car_club_rocknrome/screens/car_show_page.dart';
-import 'package:intl/intl.dart';
+import 'screens/car_list_page.dart';
 import 'screens/trips_page.dart';
+import 'screens/contact_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,9 +13,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Used Car Dealership',
+      title: 'Car Club',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const MyHomePage(),
     );
@@ -28,121 +27,59 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Car> _cars = [];
-  final NumberFormat _formatter = NumberFormat('#,##,###');
+  int _selectedIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _fetchData();
-  }
+  final List<Widget> _widgetOptions = <Widget>[
+    Center(
+        child: Image.asset(
+            'assets/mercedes_green.png')), // Image centered on the home screen
+    CarListPage(), // Page for listing cars
+    TripsPage(), // Page for listing trips
+    ContactPage(), // Page for contact information
+  ];
 
-  Future<void> _fetchData() async {
-    try {
-      final response = await http.get(
-          Uri.parse('https://used-car-dealership-be.onrender.com/api/cars/'));
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        final List<Car> cars =
-            data.map((carJson) => Car.fromJson(carJson)).toList();
-        setState(() {
-          _cars = cars;
-        });
-      } else {
-        throw Exception('Failed to load data');
-      }
-    } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error fetching car data: $error')));
-    }
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Roman\'s Car Club'),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _widgetOptions,
       ),
-      body: _cars.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: _cars.length,
-              itemBuilder: (context, index) {
-                final car = _cars[index];
-                final formattedMileage = _formatter.format(car.mileage);
-                final formattedPrice = '\$${_formatter.format(car.price)}';
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CarShowPage(carId: car.id),
-                      ),
-                    ).then((_) {
-                      _fetchData(); // Refetch the data when coming back to this page
-                    });
-                  },
-                  child: Card(
-                    child: ListTile(
-                      leading: Image.network(car.photoUrl),
-                      title: Text('${car.make} ${car.model}'),
-                      subtitle: Text(
-                          'Color: ${car.color}\nYear: ${car.year}\nMileage: $formattedMileage miles\nPrice: $formattedPrice'),
-                    ),
-                  ),
-                );
-              },
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => TripsPage()));
-        },
-        tooltip: 'View Trips',
-        child: Icon(Icons.directions_car),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.car_repair),
+            label: 'Cars',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Trips',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.contact_phone),
+            label: 'Contact',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        unselectedItemColor: Colors.grey[600],
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }
 }
-
-class Car {
-  final int id;
-  final String make;
-  final String model;
-  final String color;
-  final int year;
-  final int mileage;
-  final double price;
-  final String description;
-  final String photoUrl;
-
-  Car({
-    required this.id,
-    required this.make,
-    required this.model,
-    required this.color,
-    required this.year,
-    required this.mileage,
-    required this.price,
-    required this.description,
-    required this.photoUrl,
-  });
-
-  factory Car.fromJson(Map<String, dynamic> json) {
-    return Car(
-      id: json['id'],
-      make: json['make'] ?? 'N/A',
-      model: json['model'] ?? 'N/A',
-      color: json['color'] ?? 'N/A',
-      year: json['year'] ?? 0,
-      mileage: json['mileage'] ?? 0,
-      price: double.parse(json['price'].toString() ?? '0'),
-      description: json['description'] ?? 'No description available',
-      photoUrl: json['photo_url'] ?? 'https://example.com/default-image.jpg',
-    );
-  }
-}  
