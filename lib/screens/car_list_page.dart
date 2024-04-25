@@ -91,21 +91,24 @@ class _CarListPageState extends State<CarListPage> {
               color: Color.fromARGB(
                   255, 255, 255, 255), // Ensure card background is white
               child: ListTile(
-                leading: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 3,
-                        offset: Offset(0, 1), // changes position of shadow
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(8), // Rounded corners
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(car.photoUrl, fit: BoxFit.cover),
+                leading: Hero(
+                  tag: 'car_photo_${car.id}',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 3,
+                          offset: Offset(0, 1), // changes position of shadow
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(8), // Rounded corners
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(car.photoUrl, fit: BoxFit.cover),
+                    ),
                   ),
                 ),
                 title: Text('${car.make} ${car.model}'),
