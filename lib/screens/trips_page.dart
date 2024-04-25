@@ -65,11 +65,28 @@ class _TripsPageState extends State<TripsPage> {
             itemBuilder: (context, index) {
               Trip trip = trips[index];
               return Card(
+                color: Color.fromARGB(255, 255, 255, 255),
                 child: ListTile(
-                  leading: trip.imageUrl.isNotEmpty == true
-                      ? Image.network(trip.imageUrl,
-                          width: 100, fit: BoxFit.cover)
-                      : Icon(Icons.image, size: 50),
+                  leading: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 3,
+                          offset: Offset(0, 1),
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: trip.imageUrl.isNotEmpty
+                          ? Image.network(trip.imageUrl,
+                              width: 100, height: 100, fit: BoxFit.cover)
+                          : Icon(Icons.image, size: 50),
+                    ),
+                  ),
                   title: Text(trip.title),
                   subtitle: Text(
                     '${trip.description}\nFrom: ${_formatDate(trip.beginDate)} To: ${_formatDate(trip.endDate)}',

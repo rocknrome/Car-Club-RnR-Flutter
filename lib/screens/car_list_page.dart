@@ -12,7 +12,8 @@ class CarListPage extends StatefulWidget {
 
 class _CarListPageState extends State<CarListPage> {
   List<Car> _cars = [];
-  final NumberFormat _formatter = NumberFormat('#,##,###');
+  final NumberFormat _priceFormatter =
+      NumberFormat('#,##0', 'en_US'); // Fixed price format for US locale
   bool _isLoading = true;
   String _errorMessage = '';
 
@@ -58,6 +59,7 @@ class _CarListPageState extends State<CarListPage> {
       appBar: AppBar(
         title: Text("Cool Rides"),
       ),
+      backgroundColor: Colors.grey[300], // Adjust body background for contrast
       body: _buildBody(),
     );
   }
@@ -74,8 +76,8 @@ class _CarListPageState extends State<CarListPage> {
         itemCount: _cars.length,
         itemBuilder: (context, index) {
           final car = _cars[index];
-          final formattedMileage = _formatter.format(car.mileage);
-          final formattedPrice = '\$${_formatter.format(car.price)}';
+          final formattedMileage = _priceFormatter.format(car.mileage);
+          final formattedPrice = '\$${_priceFormatter.format(car.price)}';
           return GestureDetector(
             onTap: () {
               Navigator.push(
@@ -86,8 +88,26 @@ class _CarListPageState extends State<CarListPage> {
               ).then((_) => _fetchData());
             },
             child: Card(
+              color: Color.fromARGB(
+                  255, 255, 255, 255), // Ensure card background is white
               child: ListTile(
-                leading: Image.network(car.photoUrl),
+                leading: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 3,
+                        offset: Offset(0, 1), // changes position of shadow
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(car.photoUrl, fit: BoxFit.cover),
+                  ),
+                ),
                 title: Text('${car.make} ${car.model}'),
                 subtitle: Text(
                     'Color: ${car.color}\nYear: ${car.year}\nMileage: $formattedMileage miles\nPrice: $formattedPrice'),
