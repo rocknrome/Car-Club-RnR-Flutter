@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models/trip.dart';
 import '../services/trip_service.dart';
 
@@ -25,10 +26,10 @@ class _TripEditPageState extends State<TripEditPage> {
     _titleController = TextEditingController(text: widget.trip.title);
     _descriptionController =
         TextEditingController(text: widget.trip.description);
-    _beginDateController =
-        TextEditingController(text: widget.trip.beginDate.toString());
-    _endDateController =
-        TextEditingController(text: widget.trip.endDate.toString());
+    _beginDateController = TextEditingController(
+        text: DateFormat('yyyy-MM-dd').format(widget.trip.beginDate));
+    _endDateController = TextEditingController(
+        text: DateFormat('yyyy-MM-dd').format(widget.trip.endDate));
     _participantsController =
         TextEditingController(text: widget.trip.participants.join(', '));
     _imageUrlController = TextEditingController(text: widget.trip.imageUrl);
@@ -43,6 +44,35 @@ class _TripEditPageState extends State<TripEditPage> {
     _participantsController.dispose();
     _imageUrlController.dispose();
     super.dispose();
+  }
+
+  Future<void> _selectDate(
+      BuildContext context, TextEditingController controller) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateFormat('yyyy-MM-dd').parse(controller.text),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null &&
+        picked != DateFormat('yyyy-MM-dd').parse(controller.text)) {
+      setState(() {
+        controller.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
+    }
+  }
+
+  Widget buildDateField(
+      BuildContext context, TextEditingController controller, String label) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        suffixIcon: Icon(Icons.calendar_today),
+      ),
+      readOnly: true,
+      onTap: () => _selectDate(context, controller),
+    );
   }
 
   Future<void> _saveChanges(String tripId) async {
@@ -65,7 +95,6 @@ class _TripEditPageState extends State<TripEditPage> {
     );
 
     await TripService().updateTrip(tripId, updatedTrip);
-
     Navigator.pop(context, true); // Return true to indicate changes were saved
   }
 
@@ -88,14 +117,8 @@ class _TripEditPageState extends State<TripEditPage> {
               controller: _descriptionController,
               decoration: InputDecoration(labelText: 'Description'),
             ),
-            TextField(
-              controller: _beginDateController,
-              decoration: InputDecoration(labelText: 'Begin Date'),
-            ),
-            TextField(
-              controller: _endDateController,
-              decoration: InputDecoration(labelText: 'End Date'),
-            ),
+            buildDateField(context, _beginDateController, 'Begin Date'),
+            buildDateField(context, _endDateController, 'End Date'),
             TextField(
               controller: _participantsController,
               decoration:
