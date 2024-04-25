@@ -7,7 +7,7 @@ class AddCarPage extends StatefulWidget {
   _AddCarPageState createState() => _AddCarPageState();
 }
 
-class _AddCarPageState extends State<AddCarPage> {
+class _AddCarPageState extends State {
   late TextEditingController _makeController;
   late TextEditingController _modelController;
   late TextEditingController _colorController;
@@ -80,7 +80,8 @@ class _AddCarPageState extends State<AddCarPage> {
 
     // Wait for 2 seconds (SnackBar duration), then navigate
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, '/car_list_page');
+      Navigator.pushReplacementNamed(
+          context, '/car_list_page'); // Redirect to car list page
     });
   }
 

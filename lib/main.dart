@@ -17,7 +17,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => MyHomePage(),
+        '/car_list_page': (context) =>
+            CarListPage(), // Added route for CarListPage
+      },
     );
   }
 }
@@ -96,7 +101,7 @@ class HomeWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
-                  'assets/mercedes_green.png',
+                  'cars.jpg',
                   scale: isLandscape ? 1.5 : 1,
                 ),
                 SizedBox(height: isLandscape ? 10 : 20),

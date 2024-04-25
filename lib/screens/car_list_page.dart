@@ -89,7 +89,7 @@ class _CarListPageState extends State<CarListPage> {
             },
             child: Card(
               color: Color.fromARGB(
-                  255, 255, 255, 255), // Ensure card background is white
+                  255, 255, 255, 255), //
               child: ListTile(
                 leading: Hero(
                   tag: 'car_photo_${car.id}',
@@ -100,10 +100,10 @@ class _CarListPageState extends State<CarListPage> {
                           color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 1,
                           blurRadius: 3,
-                          offset: Offset(0, 1), // changes position of shadow
+                          offset: Offset(0, 1),
                         ),
                       ],
-                      borderRadius: BorderRadius.circular(8), // Rounded corners
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
