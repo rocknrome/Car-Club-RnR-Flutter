@@ -71,7 +71,8 @@ class _CarShowPageState extends State<CarShowPage> {
             'https://used-car-dealership-be.onrender.com/api/cars/${widget.carId}/'),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 204) {
+        // Changed the status code check to 204 for success
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Car deleted successfully!'),

@@ -64,27 +64,33 @@ class _AddCarPageState extends State<AddCarPage> {
     );
 
     if (response.statusCode == 201) {
-      // Show SnackBar
-      ScaffoldMessenger.of(context)
-          .showSnackBar(
-            SnackBar(
-              content: Text('Car added successfully!'),
-              duration: Duration(seconds: 2),
-            ),
-          )
-          .closed
-          .then((_) {
-        // Navigate back to previous page
-        Navigator.of(context).pop();
-      });
+      showSuccessSnackbar(); // Handle snackbar and navigation in a separate function
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to add car!'),
-          duration: Duration(seconds: 2),
-        ),
-      );
+      showErrorSnackbar();
     }
+  }
+
+  void showSuccessSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Car added successfully!'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+
+    // Wait for 2 seconds (SnackBar duration), then navigate
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.pushReplacementNamed(context, '/car_list_page');
+    });
+  }
+
+  void showErrorSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Failed to add car!'),
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
@@ -145,4 +151,3 @@ class _AddCarPageState extends State<AddCarPage> {
     );
   }
 }
-  
