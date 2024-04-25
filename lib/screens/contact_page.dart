@@ -13,7 +13,7 @@ class ContactPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Contact Us"),
+        title: Text("Contact Me"),
       ),
       body: Center(
         child: Padding(
@@ -71,13 +71,15 @@ class ContactPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.code), // Icon suggestive of GitHub
+                    icon: Image.asset('assets/git-logo.png'),
+                    iconSize: 40,
                     onPressed: () => _launchURL('https://github.com/rocknrome'),
                     tooltip: 'GitHub',
                   ),
                   SizedBox(width: 20),
                   IconButton(
-                    icon: Icon(Icons.business), // Icon suggestive of LinkedIn
+                    icon: Image.asset('assets/li-logo.png'),
+                    iconSize: 40,
                     onPressed: () => _launchURL(
                         'https://www.linkedin.com/in/romanlarionov/'),
                     tooltip: 'LinkedIn',

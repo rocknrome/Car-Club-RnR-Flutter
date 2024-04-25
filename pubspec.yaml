@@ -28,3 +28,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/mercedes_green.png
+    - assets/git-logo.png
+    - assets/li-logo.png
