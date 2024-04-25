@@ -93,6 +93,7 @@ class ContactPage extends StatelessWidget {
                   "My Profile",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
+                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
