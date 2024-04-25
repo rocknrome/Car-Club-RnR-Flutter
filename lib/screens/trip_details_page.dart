@@ -23,10 +23,13 @@ class TripDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            trip.imageUrl.isNotEmpty
-                ? Image.network(trip.imageUrl,
-                    width: double.infinity, fit: BoxFit.cover)
-                : SizedBox(height: 200, child: Icon(Icons.image, size: 200)),
+            Hero(
+              tag: 'trip_${trip.id}',
+              child: trip.imageUrl.isNotEmpty
+                  ? Image.network(trip.imageUrl,
+                      width: double.infinity, fit: BoxFit.cover)
+                  : SizedBox(height: 200, child: Icon(Icons.image, size: 200)),
+            ),
             SizedBox(height: 16),
             Text('${trip.title}',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),

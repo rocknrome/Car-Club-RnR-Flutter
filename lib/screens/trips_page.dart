@@ -64,42 +64,45 @@ class _TripsPageState extends State<TripsPage> {
             itemCount: trips.length,
             itemBuilder: (context, index) {
               Trip trip = trips[index];
-              return Card(
-                color: Color.fromARGB(255, 255, 255, 255),
-                child: ListTile(
-                  leading: Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 3,
-                          offset: Offset(0, 1),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(8),
+              return Hero(
+                tag: 'trip_${trip.id}',
+                child: Card(
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  child: ListTile(
+                    leading: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 3,
+                            offset: Offset(0, 1),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: trip.imageUrl.isNotEmpty
+                            ? Image.network(trip.imageUrl,
+                                width: 100, height: 100, fit: BoxFit.cover)
+                            : Icon(Icons.image, size: 50),
+                      ),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: trip.imageUrl.isNotEmpty
-                          ? Image.network(trip.imageUrl,
-                              width: 100, height: 100, fit: BoxFit.cover)
-                          : Icon(Icons.image, size: 50),
+                    title: Text(trip.title),
+                    subtitle: Text(
+                      '${trip.description}\nFrom: ${_formatDate(trip.beginDate)} To: ${_formatDate(trip.endDate)}',
+                      style: TextStyle(fontSize: 12),
+                      maxLines: 2,
                     ),
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(
+                              builder: (context) => TripDetailPage(trip: trip)))
+                          .then((_) =>
+                              _refreshTrips()); // Refresh trips after returning from detail page
+                    },
                   ),
-                  title: Text(trip.title),
-                  subtitle: Text(
-                    '${trip.description}\nFrom: ${_formatDate(trip.beginDate)} To: ${_formatDate(trip.endDate)}',
-                    style: TextStyle(fontSize: 12),
-                    maxLines: 2,
-                  ),
-                  onTap: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(
-                            builder: (context) => TripDetailPage(trip: trip)))
-                        .then((_) =>
-                            _refreshTrips()); // Refresh trips after returning from detail page
-                  },
                 ),
               );
             },
