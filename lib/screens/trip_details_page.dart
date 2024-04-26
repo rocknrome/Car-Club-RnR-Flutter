@@ -25,10 +25,16 @@ class TripDetailPage extends StatelessWidget {
           children: <Widget>[
             Hero(
               tag: 'trip_${trip.id}',
-              child: trip.imageUrl.isNotEmpty
-                  ? Image.network(trip.imageUrl,
-                      width: double.infinity, fit: BoxFit.cover)
-                  : SizedBox(height: 200, child: Icon(Icons.image, size: 200)),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16.0),
+                child: trip.imageUrl.isNotEmpty
+                    ? Image.network(trip.imageUrl,
+                        width: double.infinity, fit: BoxFit.cover)
+                    : SizedBox(
+                        height: 200,
+                        child: Icon(Icons.image, size: 200),
+                      ),
+              ),
             ),
             SizedBox(height: 16),
             Text('${trip.title}',

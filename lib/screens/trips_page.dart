@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/trip.dart';
 import '../services/trip_service.dart';
-import 'trip_add_page.dart';
 import 'trip_details_page.dart';
-import 'trip_edit_page.dart';
-import 'car_list_page.dart';
-import 'contact_page.dart';
 
 class TripsPage extends StatefulWidget {
   @override
@@ -36,17 +32,6 @@ class _TripsPageState extends State<TripsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Rally Chronicles'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TripAddPage()),
-              ).then((_) => _refreshTrips());
-            },
-          ),
-        ],
       ),
       body: _buildTripList(),
     );
@@ -96,11 +81,8 @@ class _TripsPageState extends State<TripsPage> {
                       maxLines: 2,
                     ),
                     onTap: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(
-                              builder: (context) => TripDetailPage(trip: trip)))
-                          .then((_) =>
-                              _refreshTrips()); // Refresh trips after returning from detail page
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => TripDetailPage(trip: trip)));
                     },
                   ),
                 ),
