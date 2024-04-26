@@ -15,6 +15,8 @@ The project utilizes 2 separate backends. One dedicated to cars and another one 
 # Wireframe:
 ![alt text](Wireframe.png)
 
+![alt text](<TO DO list.png>)
+
 
 # Screenshots:
 ![alt text](1-3.png)
