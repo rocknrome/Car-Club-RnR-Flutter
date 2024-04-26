@@ -31,12 +31,18 @@ class ContactPage extends StatelessWidget {
                 Text(
                   "Final Project for General Assembly",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.amber[800], // Make text orange
+                  ),
                 ),
                 Text(
                   "Full-Stack Engineer Class",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.amber[800], // Make text orange
+                  ),
                 ),
                 SizedBox(height: 20),
                 Text(
