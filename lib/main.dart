@@ -101,7 +101,7 @@ class HomeWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
-                  'cars.jpg',
+                  'assets/cars.jpg',
                   scale: isLandscape ? 1.5 : 1,
                 ),
                 SizedBox(height: isLandscape ? 10 : 20),

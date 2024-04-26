@@ -3,12 +3,15 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"assets/AssetManifest.bin": "693635b5258fe5f1cda720cf224f158c",
-"assets/AssetManifest.bin.json": "69a99f98c8b1fb8111c5fb961769fcd8",
-"assets/AssetManifest.json": "2efbb41d7877d10aac9d091f58ccd7b9",
+const RESOURCES = {"assets/AssetManifest.bin": "4ac1d1b20811324095376c171e22af0d",
+"assets/AssetManifest.bin.json": "2adee264d83f6cf4903c7cf2c11e861d",
+"assets/AssetManifest.json": "1be9e495417fa7f2f559ce87ec52aed0",
+"assets/assets/cars.jpg": "5fd3e9c2a5014173ec25df1b24c61e17",
+"assets/assets/git-logo.png": "02544b79f75fe81a91138ea9add6e326",
+"assets/assets/li-logo.png": "96ed2259ef1332eb6467a18dfe7bd961",
 "assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
-"assets/fonts/MaterialIcons-Regular.otf": "0db35ae7a415370b89e807027510caf0",
-"assets/NOTICES": "0ae8ca2db9f46ee41c597fe4673e79be",
+"assets/fonts/MaterialIcons-Regular.otf": "c40d5a9f4784f0a6980010c3f5b4cb7c",
+"assets/NOTICES": "aa7cbc47490bcad493fba0a12cc3b399",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "89ed8f4e49bcdfc0b5bfc9b24591e347",
 "assets/shaders/ink_sparkle.frag": "ecc85a2e95f5e9f53123dcaf8cb9b6ce",
 "canvaskit/canvaskit.js": "c86fbd9e7b17accae76e5ad116583dc4",
@@ -27,9 +30,9 @@ const RESOURCES = {"assets/AssetManifest.bin": "693635b5258fe5f1cda720cf224f158c
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
-"index.html": "17694406949e7b9c6047fc0665e75616",
-"/": "17694406949e7b9c6047fc0665e75616",
-"main.dart.js": "42ecb290805646d2b91cba7b69de591b",
+"index.html": "eae30c35ab9307d165013386faec6b66",
+"/": "eae30c35ab9307d165013386faec6b66",
+"main.dart.js": "5891876a6425676d9bfef0a5b1ecc831",
 "manifest.json": "6af1f175b0806c5cd8feb56ab7b07e49",
 "version.json": "0bc317e2c8366f1702838e52f21ed69c"};
 // The application shell files that are downloaded before a service worker can
