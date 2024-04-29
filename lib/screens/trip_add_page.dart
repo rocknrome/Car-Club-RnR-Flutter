@@ -15,11 +15,9 @@ class _TripAddPageState extends State<TripAddPage> {
   final TextEditingController _beginDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
   final TextEditingController _participantsController = TextEditingController();
-  final TextEditingController _beginPointController = TextEditingController();
-  final TextEditingController _endPointController = TextEditingController();
   final TextEditingController _imageUrlController = TextEditingController();
 
-  final DateFormat dateFormat = DateFormat('mm-dd-yyyy');
+  final DateFormat dateFormat = DateFormat('MM-dd-yyyy');
 
   Future<void> _addTrip(BuildContext context) async {
     final String title = _titleController.text.trim();
@@ -82,28 +80,42 @@ class _TripAddPageState extends State<TripAddPage> {
             TextField(
               controller: _beginDateController,
               decoration:
-                  InputDecoration(labelText: 'Begin Date: (mm-dd-yyyy)'),
+                  InputDecoration(labelText: 'Begin Date: (MM-dd-yyyy)'),
+              onTap: () async {
+                // Prevent keyboard from appearing
+                FocusScope.of(context).requestFocus(new FocusNode());
+                DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime(2100));
+                if (pickedDate != null) {
+                  _beginDateController.text = dateFormat.format(pickedDate);
+                }
+              },
             ),
             SizedBox(height: 16.0),
             TextField(
               controller: _endDateController,
-              decoration: InputDecoration(labelText: 'End Date: (mm-dd-yyyy)'),
+              decoration: InputDecoration(labelText: 'End Date: (MM-dd-yyyy)'),
+              onTap: () async {
+                // Prevent keyboard from appearing
+                FocusScope.of(context).requestFocus(new FocusNode());
+                DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime(2100));
+                if (pickedDate != null) {
+                  _endDateController.text = dateFormat.format(pickedDate);
+                }
+              },
             ),
             SizedBox(height: 16.0),
             TextField(
               controller: _participantsController,
               decoration:
                   InputDecoration(labelText: 'Participants: (comma-separated)'),
-            ),
-            SizedBox(height: 16.0),
-            TextField(
-              controller: _beginPointController,
-              decoration: InputDecoration(labelText: 'Begin Point:'),
-            ),
-            SizedBox(height: 16.0),
-            TextField(
-              controller: _endPointController,
-              decoration: InputDecoration(labelText: 'End Point:'),
             ),
             SizedBox(height: 16.0),
             TextField(

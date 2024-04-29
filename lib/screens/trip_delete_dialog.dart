@@ -3,7 +3,7 @@ import '../services/trip_service.dart';
 
 class TripDeleteDialog extends StatelessWidget {
   final String tripId;
-  final Function(bool) onDelete; // Callback function to handle delete result
+  final Function(bool) onDelete;
 
   const TripDeleteDialog(
       {Key? key, required this.tripId, required this.onDelete})
@@ -16,36 +16,42 @@ class TripDeleteDialog extends StatelessWidget {
       content: Text('Are you sure you want to delete this trip?'),
       actions: [
         TextButton(
-          onPressed: () {
-            TripService().deleteTrip(tripId).then((_) {
-              onDelete(true); // Notifying parent widget of successful deletion
-              Navigator.of(context).pop(); // Pop the dialog
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Trip deleted successfully.'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            }).catchError((error) {
-              // Handle errors and show a snackbar with the error message
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Failed to delete trip: $error'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            });
-          },
+          onPressed: () => _deleteTrip(context),
           child: Text('Delete'),
         ),
         TextButton(
           onPressed: () {
-            onDelete(false); // Notify parent widget of cancellation
-            Navigator.of(context).pop(); // Pop the dialog
+            onDelete(false);
+            Navigator.of(context).pop();
           },
           child: Text('Cancel'),
         ),
       ],
     );
+  }
+
+  void _deleteTrip(BuildContext context) {
+    TripService().deleteTrip(tripId).then((_) {
+      onDelete(true);
+      Navigator.of(context).pop(); // Ensure the dialog is popped first
+      Future.delayed(Duration(milliseconds: 300), () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Trip deleted successfully.'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      });
+    }).catchError((error) {
+      Navigator.of(context).pop();
+      Future.delayed(Duration(milliseconds: 300), () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to delete trip: $error'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      });
+    });
   }
 }

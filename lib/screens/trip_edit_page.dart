@@ -77,7 +77,8 @@ class _TripEditPageState extends State<TripEditPage> {
 
   Future<void> _saveChanges(String tripId) async {
     if (tripId.isEmpty) {
-      print('Trip ID is empty');
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Trip ID is empty, cannot save changes.")));
       return;
     }
 
@@ -94,8 +95,24 @@ class _TripEditPageState extends State<TripEditPage> {
       updatedAt: DateTime.now(),
     );
 
-    await TripService().updateTrip(tripId, updatedTrip);
-    Navigator.pop(context, true); // Return true to indicate changes were saved
+    try {
+      await TripService().updateTrip(tripId, updatedTrip);
+      Navigator.pop(
+          context, true); // Return true to indicate changes were saved
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Trip updated successfully.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to save changes: $e'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   @override
@@ -130,9 +147,7 @@ class _TripEditPageState extends State<TripEditPage> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                _saveChanges(widget.trip.id);
-              },
+              onPressed: () => _saveChanges(widget.trip.id),
               child: Text('Save Changes'),
             ),
           ],

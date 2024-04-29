@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => MyHomePage(),
         '/car_list_page': (context) =>
-            CarListPage(), // Ensure this route is correctly referenced
+            CarListPage(), // Added route for CarListPage
       },
     );
   }
@@ -101,17 +101,9 @@ class HomeWidget extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                GestureDetector(
-                  onHorizontalDragEnd: (details) {
-                    if (details.primaryVelocity! < 0) {
-                      // Swipe left
-                      Navigator.pushNamed(context, '/car_list_page');
-                    }
-                  },
-                  child: Image.asset(
-                    'assets/cars.jpg',
-                    scale: isLandscape ? 1.5 : 1,
-                  ),
+                Image.asset(
+                  'assets/cars.jpg',
+                  scale: isLandscape ? 1.5 : 1,
                 ),
                 SizedBox(height: isLandscape ? 10 : 20),
                 Text(

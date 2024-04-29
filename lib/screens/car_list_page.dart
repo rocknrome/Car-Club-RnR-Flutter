@@ -59,7 +59,7 @@ class _CarListPageState extends State<CarListPage> {
       appBar: AppBar(
         title: Text("Cool Rides"),
       ),
-      backgroundColor: Colors.grey[300], // Adjust body background for contrast
+      backgroundColor: Colors.grey[300],
       body: _buildBody(),
     );
   }
