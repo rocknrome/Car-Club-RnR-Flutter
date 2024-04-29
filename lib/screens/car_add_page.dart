@@ -13,7 +13,7 @@ class _AddCarPageState extends State {
   late TextEditingController _colorController;
   late TextEditingController _yearController;
   late TextEditingController _mileageController;
-
+  late TextEditingController _priceController;
   late TextEditingController _descriptionController;
   late TextEditingController _photoUrlController;
 
@@ -25,7 +25,7 @@ class _AddCarPageState extends State {
     _colorController = TextEditingController();
     _yearController = TextEditingController();
     _mileageController = TextEditingController();
-
+    _priceController = TextEditingController();
     _descriptionController = TextEditingController();
     _photoUrlController = TextEditingController();
   }
@@ -37,7 +37,7 @@ class _AddCarPageState extends State {
     _colorController.dispose();
     _yearController.dispose();
     _mileageController.dispose();
-
+    _priceController.dispose();
     _descriptionController.dispose();
     _photoUrlController.dispose();
     super.dispose();
@@ -52,6 +52,7 @@ class _AddCarPageState extends State {
       "color": _colorController.text,
       "year": int.tryParse(_yearController.text) ?? 0,
       "mileage": int.tryParse(_mileageController.text) ?? 0,
+      "price": _priceController.text,
       "description": _descriptionController.text,
       "photo_url": _photoUrlController.text
     };
@@ -126,6 +127,10 @@ class _AddCarPageState extends State {
                 controller: _mileageController,
                 decoration: InputDecoration(labelText: 'Mileage'),
                 keyboardType: TextInputType.number,
+              ),
+              TextFormField(
+                controller: _priceController,
+                decoration: InputDecoration(labelText: 'Price'),
               ),
               TextFormField(
                 controller: _descriptionController,

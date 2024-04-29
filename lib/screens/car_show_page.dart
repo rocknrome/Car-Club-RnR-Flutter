@@ -152,6 +152,10 @@ class _CarShowPageState extends State<CarShowPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      'Price: $formattedPrice',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ),
                   SizedBox(height: 20),
                   Row(

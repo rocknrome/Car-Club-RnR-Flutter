@@ -77,7 +77,7 @@ class _CarListPageState extends State<CarListPage> {
         itemBuilder: (context, index) {
           final car = _cars[index];
           final formattedMileage = _priceFormatter.format(car.mileage);
-
+          final formattedPrice = '\$${_priceFormatter.format(car.price)}';
           return GestureDetector(
             onTap: () {
               Navigator.push(
@@ -88,7 +88,8 @@ class _CarListPageState extends State<CarListPage> {
               ).then((_) => _fetchData());
             },
             child: Card(
-              color: Color.fromARGB(255, 255, 255, 255), //
+              color: Color.fromARGB(
+                  255, 255, 255, 255), //
               child: ListTile(
                 leading: Hero(
                   tag: 'car_photo_${car.id}',
@@ -112,7 +113,7 @@ class _CarListPageState extends State<CarListPage> {
                 ),
                 title: Text('${car.make} ${car.model}'),
                 subtitle: Text(
-                    'Color: ${car.color}\nYear: ${car.year}\nMileage: $formattedMileage miles'),
+                    'Color: ${car.color}\nYear: ${car.year}\nMileage: $formattedMileage miles\nPrice: $formattedPrice'),
               ),
             ),
           );

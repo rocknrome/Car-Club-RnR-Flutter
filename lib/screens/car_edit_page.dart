@@ -17,7 +17,7 @@ class _CarEditPageState extends State<CarEditPage> {
   late TextEditingController _colorController;
   late TextEditingController _yearController;
   late TextEditingController _mileageController;
-
+  late TextEditingController _priceController;
   late TextEditingController _descriptionController;
   late TextEditingController _photoUrlController;
 
@@ -29,7 +29,7 @@ class _CarEditPageState extends State<CarEditPage> {
     _colorController = TextEditingController();
     _yearController = TextEditingController();
     _mileageController = TextEditingController();
-
+    _priceController = TextEditingController();
     _descriptionController = TextEditingController();
     _photoUrlController = TextEditingController();
 
@@ -44,7 +44,7 @@ class _CarEditPageState extends State<CarEditPage> {
     _colorController.dispose();
     _yearController.dispose();
     _mileageController.dispose();
-
+    _priceController.dispose();
     _descriptionController.dispose();
     _photoUrlController.dispose();
     super.dispose();
@@ -63,7 +63,7 @@ class _CarEditPageState extends State<CarEditPage> {
         _colorController.text = carData['color'];
         _yearController.text = carData['year'].toString();
         _mileageController.text = carData['mileage'].toString();
-
+        _priceController.text = carData['price'];
         _descriptionController.text = carData['description'];
         _photoUrlController.text = carData['photo_url'];
       });
@@ -85,6 +85,7 @@ class _CarEditPageState extends State<CarEditPage> {
       "color": _colorController.text,
       "year": int.tryParse(_yearController.text) ?? 0,
       "mileage": int.tryParse(_mileageController.text) ?? 0,
+      "price": _priceController.text,
       "description": _descriptionController.text,
       "photo_url": _photoUrlController.text
     };
@@ -148,6 +149,9 @@ class _CarEditPageState extends State<CarEditPage> {
                   controller: _mileageController,
                   decoration: InputDecoration(labelText: 'Mileage'),
                   keyboardType: TextInputType.number),
+              TextFormField(
+                  controller: _priceController,
+                  decoration: InputDecoration(labelText: 'Price')),
               TextFormField(
                   controller: _descriptionController,
                   decoration: InputDecoration(labelText: 'Description')),
