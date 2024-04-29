@@ -13,7 +13,7 @@ class CarListPage extends StatefulWidget {
 class _CarListPageState extends State<CarListPage> {
   List<Car> _cars = [];
   final NumberFormat _priceFormatter =
-      NumberFormat('#,##0', 'en_US'); // Fixed price format for US locale
+      NumberFormat('#,##0', 'en_US'); // For mileage
   bool _isLoading = true;
   String _errorMessage = '';
 
@@ -59,7 +59,7 @@ class _CarListPageState extends State<CarListPage> {
       appBar: AppBar(
         title: Text("Cool Rides"),
       ),
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[300], // Adjust body background for contrast
       body: _buildBody(),
     );
   }
@@ -77,7 +77,6 @@ class _CarListPageState extends State<CarListPage> {
         itemBuilder: (context, index) {
           final car = _cars[index];
           final formattedMileage = _priceFormatter.format(car.mileage);
-          final formattedPrice = '\$${_priceFormatter.format(car.price)}';
           return GestureDetector(
             onTap: () {
               Navigator.push(
@@ -112,7 +111,7 @@ class _CarListPageState extends State<CarListPage> {
                 ),
                 title: Text('${car.make} ${car.model}'),
                 subtitle: Text(
-                    'Color: ${car.color}\nYear: ${car.year}\nMileage: $formattedMileage miles\nPrice: $formattedPrice'),
+                    'Color: ${car.color}\nYear: ${car.year}\nMileage: $formattedMileage miles'),
               ),
             ),
           );

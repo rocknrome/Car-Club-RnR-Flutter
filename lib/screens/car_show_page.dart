@@ -16,9 +16,8 @@ class CarShowPage extends StatefulWidget {
 
 class _CarShowPageState extends State<CarShowPage> {
   Future<Map<String, dynamic>>? _futureCar;
-  final NumberFormat _formatter = NumberFormat('#,##0', 'en_US');
-  final NumberFormat _currencyFormatter = NumberFormat.currency(
-      symbol: '\$', decimalDigits: 0); // Formatter for currency
+  final NumberFormat _formatter =
+      NumberFormat('#,##0', 'en_US'); // Correct formatter for mileage
 
   @override
   void initState() {
@@ -43,42 +42,6 @@ class _CarShowPageState extends State<CarShowPage> {
     }
   }
 
-  Future<void> _deleteCar() async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Confirm Deletion'),
-        content: Text('Are you sure you want to delete this car?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text('Delete'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text('Cancel'),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed != null && confirmed) {
-      final response = await http.delete(Uri.parse(
-          'https://used-car-dealership-be.onrender.com/api/cars/${widget.carId}/'));
-
-      if (response.statusCode == 204) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Car deleted successfully!'),
-            duration: Duration(seconds: 2)));
-        Navigator.pop(context); // Redirect to main page
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Failed to delete car!'),
-            duration: Duration(seconds: 2)));
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,8 +59,6 @@ class _CarShowPageState extends State<CarShowPage> {
             } else {
               final car = snapshot.data!;
               final formattedMileage = _formatter.format(car['mileage']);
-              final formattedPrice =
-                  _currencyFormatter.format(double.parse(car['price']));
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -128,11 +89,6 @@ class _CarShowPageState extends State<CarShowPage> {
                     child: Text('Mileage: $formattedMileage miles',
                         style: TextStyle(fontSize: 18)),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text('Price: $formattedPrice',
-                        style: TextStyle(fontSize: 18)),
-                  ),
                   SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -149,7 +105,46 @@ class _CarShowPageState extends State<CarShowPage> {
                         child: Text('Edit Car'),
                       ),
                       ElevatedButton(
-                        onPressed: _deleteCar,
+                        onPressed: () async {
+                          final confirmed = await showDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Confirm Deletion'),
+                              content: Text(
+                                  'Are you sure you want to delete this car?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(true),
+                                  child: Text('Delete'),
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(false),
+                                  child: Text('Cancel'),
+                                ),
+                              ],
+                            ),
+                          );
+
+                          if (confirmed == true) {
+                            final response = await http.delete(Uri.parse(
+                                'https://used-car-dealership-be.onrender.com/api/cars/${widget.carId}/'));
+                            if (response.statusCode == 204) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content:
+                                          Text('Car deleted successfully!'),
+                                      duration: Duration(seconds: 2)));
+                              Navigator.pop(context); // Redirect to main page
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text('Failed to delete car!'),
+                                      duration: Duration(seconds: 2)));
+                            }
+                          }
+                        },
                         child: Text('Delete Car'),
                       ),
                       ElevatedButton(
