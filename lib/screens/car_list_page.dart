@@ -59,7 +59,7 @@ class _CarListPageState extends State<CarListPage> {
       appBar: AppBar(
         title: Text("Cool Rides"),
       ),
-      backgroundColor: Colors.grey[300], // Adjust body background for contrast
+      backgroundColor: Colors.grey[300],
       body: _buildBody(),
     );
   }
@@ -88,8 +88,7 @@ class _CarListPageState extends State<CarListPage> {
               ).then((_) => _fetchData());
             },
             child: Card(
-              color: Color.fromARGB(
-                  255, 255, 255, 255), //
+              color: Color.fromARGB(255, 255, 255, 255),
               child: ListTile(
                 leading: Hero(
                   tag: 'car_photo_${car.id}',
