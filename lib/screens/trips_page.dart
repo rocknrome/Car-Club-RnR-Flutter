@@ -36,17 +36,7 @@ class _TripsPageState extends State<TripsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Rally Chronicles'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TripAddPage()),
-              ).then((_) => _refreshTrips());
-            },
-          ),
-        ],
+        actions: [],
       ),
       body: _buildTripList(),
     );
